@@ -1,0 +1,285 @@
+/* ── RESET ───────────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* ── THEME ───────────────────────────────────── */
+:root {
+  --bg: #1f1f1f;
+  --surface: rgba(20, 20, 20, 0.65);
+  --surface-soft: rgba(20, 20, 20, 0.45);
+  --border: rgba(16, 185, 129, 0.2);
+  --border-strong: rgba(16, 185, 129, 0.45);
+
+  --text: #f3f4f6;
+  --text-dim: #9ca3af;
+  --text-soft: #6b7280;
+
+  --accent: #10b981;
+  --accent-soft: rgba(16, 185, 129, 0.12);
+
+  --radius: 14px;
+  --radius-sm: 10px;
+
+  --shadow: 0 10px 30px rgba(0,0,0,0.4);
+}
+
+/* Light */
+[data-theme="light"] {
+  --bg: #f0fdf8;
+  --surface: rgba(255,255,255,0.75);
+  --surface-soft: rgba(255,255,255,0.55);
+  --border: rgba(16,185,129,0.25);
+  --border-strong: rgba(4,120,87,0.6);
+
+  --text: #111827;
+  --text-dim: #374151;
+  --text-soft: #6b7280;
+
+  --accent: #047857;
+  --accent-soft: rgba(4,120,87,0.08);
+
+  --shadow: 0 6px 18px rgba(0,0,0,0.08);
+}
+
+/* ── BODY ───────────────────────────────────── */
+body {
+  font-family: 'Exo 2', system-ui, sans-serif;
+  background:
+    linear-gradient(135deg,
+      rgba(16,185,129,0.03),
+      rgba(59,130,246,0.03)
+    ),
+    var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+}
+
+/* ── HEADER ─────────────────────────────────── */
+header {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+
+  background: var(--surface-soft);
+  border-bottom: 1px solid var(--border);
+
+  padding: 18px 40px;
+
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.header-title {
+  flex: 1;
+}
+
+.header-title h1 {
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.header-title p {
+  font-size: 11px;
+  color: var(--text-dim);
+  margin-top: 4px;
+}
+
+/* ── BUTTON ─────────────────────────────────── */
+.theme-btn {
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text-dim);
+  padding: 5px 12px;
+  border-radius: 999px;
+  font-size: 11px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.theme-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* ── GRID ───────────────────────────────────── */
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 18px;
+  padding: 40px;
+}
+
+/* ── CARD (less boxy, softer) ───────────────── */
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+
+  padding: 20px;
+
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+
+  background: var(--surface);
+
+  text-decoration: none;
+  color: inherit;
+
+  transition: all 0.25s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+/* subtle gradient edge instead of harsh border */
+.card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(120deg, var(--accent), transparent 40%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+/* hover feel = float + glow */
+.card:hover {
+  transform: translateY(-4px);
+  border-color: var(--border-strong);
+  box-shadow: var(--shadow);
+}
+
+.card:hover::before {
+  opacity: 0.08;
+}
+
+/* ── HEADER ROW ─────────────────────────────── */
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.card-icon {
+  font-size: 18px;
+  opacity: 0.9;
+}
+
+/* ── BADGES ─────────────────────────────────── */
+.card-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.badge {
+  font-size: 10px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-family: 'DM Mono', monospace;
+  border: 1px solid var(--border);
+}
+
+.badge-green {
+  color: var(--accent);
+  background: var(--accent-soft);
+}
+
+.badge-orange {
+  color: #f97316;
+  background: rgba(249,115,22,0.12);
+}
+
+.badge-blue {
+  color: #60a5fa;
+  background: rgba(96,165,250,0.12);
+}
+
+.badge-purple {
+  color: #a78bfa;
+  background: rgba(167,139,250,0.12);
+}
+
+/* ── TEXT ───────────────────────────────────── */
+.card h3 {
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.card p {
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--text-dim);
+}
+
+/* ── META ───────────────────────────────────── */
+.card-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 11px;
+  color: var(--text-soft);
+}
+
+.card-meta-row strong {
+  color: var(--text-dim);
+  font-weight: 500;
+}
+
+/* ── FOOTER ─────────────────────────────────── */
+.card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: auto;
+  padding-top: 10px;
+  border-top: 1px solid var(--border);
+}
+
+.card-link {
+  font-size: 12px;
+  color: var(--accent);
+  font-weight: 500;
+  transition: transform 0.15s ease;
+}
+
+.card:hover .card-link {
+  transform: translateX(3px);
+}
+
+/* ── STATUS ─────────────────────────────────── */
+.card-status {
+  font-size: 10px;
+  color: var(--text-soft);
+}
+
+.card-status.live {
+  color: var(--accent);
+}
+
+/* ── PLACEHOLDER ────────────────────────────── */
+.card-placeholder {
+  border: 1px dashed var(--border);
+  border-radius: var(--radius);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 180px;
+  color: var(--text-soft);
+  font-size: 12px;
+}
+
+.card-placeholder .plus {
+  font-size: 24px;
+  opacity: 0.4;
+}
