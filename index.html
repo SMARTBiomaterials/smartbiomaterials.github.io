@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SMART BIOMATERIALS — Open Datasets & Tools</title>
+<title>SMART Biomaterials — Open Datasets & Tools</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
@@ -249,25 +249,24 @@
   </a>
   <div class="header-right">
     <a class="nav-link" href="https://smart-biomaterials.com">Lab website</a>
-    <a class="nav-link" href="https://github.com/SMART-Biomaterials" target="_blank">GitHub</a>
+    <a class="nav-link" href="https://github.com/SMARTBiomaterials" target="_blank">GitHub</a>
     <button class="theme-btn" id="theme-btn" onclick="toggleTheme()">☀︎ Light</button>
   </div>
 </header>
 
 <div class="hero">
-  <div class="hero-eyebrow">Institute of Biomedical Engineering · University of Oxford</div>
   <h1>Open datasets &amp;<br><span>interactive tools</span><br>from SMART-Biomaterials</h1>
   <p>All datasets produced by the lab are published here as open, interactive resources. Browse, filter, and download — or contribute new data via pull request.</p>
   <div class="hero-stats" id="hero-stats">
-    <div class="hero-stat"><span class="n">1</span><span class="l">Datasets</span></div>
+    <div class="hero-stat"><span class="n">2</span><span class="l">Tools</span></div>
     <div class="hero-stat"><span class="n">563</span><span class="l">Conditions</span></div>
-    <div class="hero-stat"><span class="n">2</span><span class="l">Modalities</span></div>
+    <div class="hero-stat"><span class="n">3</span><span class="l">Papers</span></div>
   </div>
 </div>
 
 <div class="section">
   <div class="section-header">
-    <h2>Datasets &amp; Dashboards</h2>
+    <h2>Datasets &amp; Tools</h2>
     <span><!-- auto-populated --></span>
   </div>
   <div class="cards" id="cards-container"></div>
@@ -293,15 +292,35 @@ const DATASETS = [
       { label: "Electrical", style: "badge-orange" },
       { label: "Mechanical", style: "badge-green" },
       { label: "In vitro", style: "badge-blue" },
+      { label: "Interactive", style: "badge-purple" },
     ],
     meta: [
       { key: "Paper", val: "Burgess, Marsh, Lucian & Nair (2026)" },
       { key: "Records", val: "563 conditions · 2 modalities · 4 outcomes" },
-      { key: "Data", val: "CC BY 4.0 · Code: MIT" },
+      { key: "Licence", val: "CC BY 4.0 · Code: MIT" },
     ],
     href: "./stim-dashboard/",
     status: "live",
     statusLabel: "Live",
+  },
+  {
+    icon: "📐",
+    title: "MATtBend — Beam Tip Deflection Tracker",
+    description: "A MATLAB tool for tracking beam tip deflection in video files. Uses point tracking to measure absolute deflection and X/Y displacement components over time, with interactive scale calibration, batch processing of multiple video formats, and Excel + plot output. Developed for characterising soft robotic and tissue engineering devices.",
+    badges: [
+      { label: "MATLAB", style: "badge-orange" },
+      { label: "Strain Analysis", style: "badge-blue" },
+      { label: "Video", style: "badge-purple" },
+    ],
+    meta: [
+      { key: "Paper", val: "Burgess et al. (2025) — arXiv:2504.05302" },
+      { key: "Output", val: "Per-video + master Excel · deflection plots" },
+      { key: "Requires", val: "MATLAB R2020a+ · Computer Vision Toolbox" },
+    ],
+    href: "https://github.com/SMARTBiomaterials/MATtBend",
+    status: "live",
+    statusLabel: "GitHub",
+    external: true,
   },
   // ── ADD NEW DATASETS BELOW ──
   // {
@@ -325,6 +344,8 @@ function renderCards() {
     const card = document.createElement('a');
     card.href = d.href;
     card.className = 'card';
+    if (d.external) { card.target = '_blank'; card.rel = 'noopener noreferrer'; }
+    const linkLabel = d.external ? 'View on GitHub →' : 'Open dashboard →';
     card.innerHTML = `
       <div class="card-header">
         <div class="card-icon">${d.icon}</div>
@@ -334,17 +355,17 @@ function renderCards() {
       <p>${d.description}</p>
       <div class="card-meta">${d.meta.map(m => `<div class="card-meta-row"><strong>${m.key}:</strong> ${m.val}</div>`).join('')}</div>
       <div class="card-footer">
-        <span class="card-link">Open dashboard →</span>
+        <span class="card-link">${linkLabel}</span>
         <span class="card-status ${d.status}">${d.statusLabel}</span>
       </div>
     `;
     container.appendChild(card);
   });
 
-  // Add placeholder for future datasets
+  // Placeholder for future entries
   const placeholder = document.createElement('div');
   placeholder.className = 'card-placeholder';
-  placeholder.innerHTML = `<span class="plus">+</span><span>More datasets coming soon</span>`;
+  placeholder.innerHTML = `<span class="plus">+</span><span>More datasets &amp; tools coming soon</span>`;
   container.appendChild(placeholder);
 }
 
