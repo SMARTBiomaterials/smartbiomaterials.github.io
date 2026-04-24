@@ -1,241 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SMART Biomaterials — Open Datasets & Tools</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
-<style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SMART BIOMATERIALS — Open Datasets & Tools</title>
 
-  :root {
-    --bg: #1f1f1f;
-    --surface: rgba(20,20,20,0.7);
-    --border: rgba(16,185,129,0.2);
-    --border-hover: rgba(16,185,129,0.5);
-    --text: #f3f4f6;
-    --text-dim: #9ca3af;
-    --text-dimmer: #6b7280;
-    --green: #10b981;
-    --green-glow: rgba(16,185,129,0.7);
-    --green-dim: rgba(16,185,129,0.12);
-    --green-dark: #047857;
-    --shadow: rgba(0,0,0,0.5);
-    --sans: 'Exo 2', sans-serif;
-    --mono: 'DM Mono', monospace;
-    --radius: 8px;
-  }
+  <!-- Strict CSP (no external deps) -->
+  <meta http-equiv="Content-Security-Policy" content="
+    default-src 'self';
+    script-src 'self';
+    style-src 'self';
+    font-src 'self';
+    img-src 'self' data:;
+    connect-src 'self';
+    object-src 'none';
+    base-uri 'self';
+    form-action 'self';
+    upgrade-insecure-requests;
+  ">
 
-  [data-theme="light"] {
-    --bg: #f0fdf8;
-    --surface: rgba(255,255,255,0.85);
-    --border: rgba(16,185,129,0.25);
-    --border-hover: rgba(4,120,87,0.6);
-    --text: #111827;
-    --text-dim: #374151;
-    --text-dimmer: #6b7280;
-    --green: #047857;
-    --green-glow: rgba(4,120,87,0.5);
-    --green-dim: rgba(4,120,87,0.08);
-    --green-dark: #065f46;
-    --shadow: rgba(0,0,0,0.08);
-  }
-  @media (prefers-color-scheme: light) {
-    :root:not([data-theme="dark"]) {
-      --bg: #f0fdf8; --surface: rgba(255,255,255,0.85);
-      --border: rgba(16,185,129,0.25); --border-hover: rgba(4,120,87,0.6);
-      --text: #111827; --text-dim: #374151; --text-dimmer: #6b7280;
-      --green: #047857; --green-glow: rgba(4,120,87,0.5);
-      --green-dim: rgba(4,120,87,0.08); --green-dark: #065f46;
-      --shadow: rgba(0,0,0,0.08);
-    }
-  }
+  <!-- Local styles -->
+  <link rel="stylesheet" href="/assets/css/style.css">
 
-  body {
-    background-color: var(--bg);
-    background-image: linear-gradient(135deg,
-      rgba(16,185,129,0.025) 0%, rgba(59,130,246,0.025) 25%,
-      rgba(250,204,21,0.025) 50%, rgba(239,68,68,0.025) 75%,
-      rgba(139,92,246,0.025) 100%);
-    background-attachment: fixed;
-    color: var(--text);
-    font-family: var(--sans);
-    font-size: 14px;
-    min-height: 100vh;
-  }
-
-  /* ── HEADER ── */
-  header {
-    background: rgba(0,0,0,0.55);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border-bottom: 1px solid var(--border);
-    padding: 16px 48px;
-    display: flex;
-    align-items: center;
-    gap: 20px;
-    position: sticky;
-    top: 0;
-    z-index: 50;
-  }
-  .logo-link { text-decoration: none; display: flex; align-items: center; gap: 12px; flex: 1; }
-  .logo-icon {
-    width: 36px; height: 36px; border-radius: 8px;
-    background: linear-gradient(135deg, #10b981, #059669);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 18px; flex-shrink: 0;
-    box-shadow: 0 0 12px rgba(16,185,129,0.4);
-  }
-  .logo-text { display: flex; flex-direction: column; gap: 1px; }
-  .logo-text strong {
-    font-size: 15px; font-weight: 700; color: var(--text);
-    letter-spacing: 0.02em;
-    text-shadow: 0 0 12px rgba(16,185,129,0.4);
-  }
-  .logo-text span { font-size: 10px; color: var(--text-dimmer); letter-spacing: 0.08em; text-transform: uppercase; }
-
-  .header-right { display: flex; align-items: center; gap: 12px; }
-  .nav-link {
-    font-size: 12px; color: var(--text-dim); text-decoration: none;
-    letter-spacing: 0.05em; text-transform: uppercase;
-    transition: color 0.2s, text-shadow 0.2s;
-    font-weight: 500;
-  }
-  .nav-link:hover { color: var(--green); text-shadow: 0 0 8px var(--green-glow); }
-  .theme-btn {
-    background: transparent; border: 1px solid var(--border);
-    color: var(--text-dim); padding: 5px 12px; border-radius: var(--radius);
-    cursor: pointer; font-family: var(--sans); font-size: 11px;
-    transition: all 0.15s; flex-shrink: 0;
-  }
-  .theme-btn:hover { border-color: var(--green); color: var(--green); }
-
-  /* ── HERO ── */
-  .hero {
-    padding: 80px 48px 64px;
-    max-width: 900px;
-  }
-  .hero-eyebrow {
-    display: inline-block;
-    font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
-    color: var(--green); font-weight: 600;
-    border: 1px solid var(--border);
-    padding: 4px 12px; border-radius: 20px;
-    background: var(--green-dim);
-    margin-bottom: 24px;
-  }
-  .hero h1 {
-    font-size: clamp(28px, 4vw, 48px);
-    font-weight: 700; line-height: 1.15;
-    color: var(--text); letter-spacing: -0.01em;
-    margin-bottom: 20px;
-    text-shadow: 0 0 40px rgba(16,185,129,0.2);
-  }
-  .hero h1 span { color: var(--green); text-shadow: 0 0 20px var(--green-glow); }
-  .hero p {
-    font-size: 15px; line-height: 1.75; color: var(--text-dim);
-    max-width: 640px; margin-bottom: 32px;
-  }
-  .hero-stats {
-    display: flex; gap: 32px; flex-wrap: wrap;
-  }
-  .hero-stat { display: flex; flex-direction: column; gap: 2px; }
-  .hero-stat .n { font-size: 28px; font-weight: 700; color: var(--green); line-height: 1; text-shadow: 0 0 16px var(--green-glow); }
-  .hero-stat .l { font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-dimmer); }
-
-  /* ── SECTION ── */
-  .section { padding: 0 48px 80px; }
-  .section-header {
-    display: flex; align-items: baseline; gap: 16px;
-    margin-bottom: 32px; padding-bottom: 12px;
-    border-bottom: 1px solid var(--border);
-  }
-  .section-header h2 {
-    font-size: 13px; font-weight: 600; letter-spacing: 0.1em;
-    text-transform: uppercase; color: var(--green);
-  }
-  .section-header span { font-size: 11px; color: var(--text-dimmer); font-family: var(--mono); }
-
-  /* ── CARDS ── */
-  .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px; }
-
-  .card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 24px;
-    display: flex; flex-direction: column; gap: 14px;
-    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
-    text-decoration: none; color: inherit;
-    position: relative; overflow: hidden;
-  }
-  .card::before {
-    content: '';
-    position: absolute; top: 0; left: 0; right: 0; height: 2px;
-    background: linear-gradient(90deg, var(--green), transparent);
-    opacity: 0; transition: opacity 0.25s;
-  }
-  .card:hover { transform: translateY(-4px); box-shadow: 0 12px 24px var(--shadow), 0 0 20px rgba(16,185,129,0.08); border-color: var(--border-hover); }
-  .card:hover::before { opacity: 1; }
-
-  .card-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
-  .card-icon {
-    width: 40px; height: 40px; border-radius: var(--radius);
-    background: var(--green-dim); border: 1px solid var(--border);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 18px; flex-shrink: 0;
-  }
-  .card-badges { display: flex; gap: 6px; flex-wrap: wrap; }
-  .badge {
-    font-size: 10px; letter-spacing: 0.05em; text-transform: uppercase;
-    padding: 2px 8px; border-radius: 20px;
-    font-weight: 600; font-family: var(--mono);
-  }
-  .badge-green { background: var(--green-dim); color: var(--green); border: 1px solid var(--border); }
-  .badge-orange { background: rgba(249,115,22,0.1); color: #f97316; border: 1px solid rgba(249,115,22,0.3); }
-  .badge-blue { background: rgba(96,165,250,0.1); color: #60a5fa; border: 1px solid rgba(96,165,250,0.3); }
-  .badge-purple { background: rgba(167,139,250,0.1); color: #a78bfa; border: 1px solid rgba(167,139,250,0.3); }
-  .badge-dim { background: rgba(107,114,128,0.1); color: #9ca3af; border: 1px solid rgba(107,114,128,0.2); }
-
-  .card h3 { font-size: 15px; font-weight: 600; color: var(--text); line-height: 1.3; }
-  .card p { font-size: 12px; color: var(--text-dim); line-height: 1.7; flex: 1; }
-
-  .card-meta { display: flex; flex-direction: column; gap: 4px; }
-  .card-meta-row { display: flex; gap: 8px; align-items: baseline; font-size: 11px; color: var(--text-dimmer); }
-  .card-meta-row strong { color: var(--text-dim); font-weight: 500; }
-
-  .card-footer { display: flex; align-items: center; justify-content: space-between; padding-top: 12px; border-top: 1px solid var(--border); }
-  .card-link { font-size: 12px; color: var(--green); font-weight: 600; letter-spacing: 0.03em; display: flex; align-items: center; gap: 4px; transition: gap 0.15s; }
-  .card:hover .card-link { gap: 8px; }
-  .card-status { font-size: 10px; color: var(--text-dimmer); font-family: var(--mono); }
-  .card-status.live { color: var(--green); }
-  .card-status.live::before { content: '● '; font-size: 8px; }
-
-  /* ── COMING SOON placeholder card ── */
-  .card-placeholder {
-    background: transparent;
-    border: 1px dashed rgba(107,114,128,0.3);
-    border-radius: var(--radius);
-    padding: 24px;
-    display: flex; align-items: center; justify-content: center;
-    min-height: 200px; color: var(--text-dimmer);
-    font-size: 12px; text-align: center; flex-direction: column; gap: 8px;
-  }
-  .card-placeholder .plus { font-size: 28px; color: rgba(107,114,128,0.3); }
-
-  /* ── FOOTER ── */
-  footer {
-    border-top: 1px solid var(--border);
-    padding: 24px 48px;
-    display: flex; align-items: center; justify-content: space-between;
-    flex-wrap: wrap; gap: 16px;
-    font-size: 11px; color: var(--text-dimmer);
-  }
-  footer a { color: var(--green); text-decoration: none; }
-  footer a:hover { text-decoration: underline; }
-  .footer-links { display: flex; gap: 20px; }
-</style>
+  <!-- Local fonts -->
+  <link rel="stylesheet" href="/assets/css/fonts.css">
 </head>
 <body>
 
@@ -249,7 +37,7 @@
   <div class="header-right">
     <a class="nav-link" href="https://smart-biomaterials.com">Lab website</a>
     <a class="nav-link" href="https://github.com/SMARTBiomaterials" target="_blank">GitHub</a>
-    <button class="theme-btn" id="theme-btn" onclick="toggleTheme()">☀︎ Light</button>
+    <button class="theme-btn" id="theme-btn" type="button">☀︎ Light</button>
   </div>
 </header>
 
@@ -279,115 +67,6 @@
   </div>
 </footer>
 
-<script>
-// ── DATASET REGISTRY ──────────────────────────────────────────────────────────
-// To add a new dataset: add one object to this array and redeploy.
-const DATASETS = [
-  {
-    icon: "⚡",
-    title: "Electrical & Mechanical Stimulation of Skin Cells",
-    description: "A data-driven systematic review of in vitro electrical and mechanical stimulation effects on fibroblasts and keratinocytes. 563 experimental conditions from the peer-reviewed literature, with fold-change outcomes normalised to unstimulated controls.",
-    badges: [
-      { label: "Electrical", style: "badge-orange" },
-      { label: "Mechanical", style: "badge-green" },
-      { label: "In vitro", style: "badge-blue" },
-      { label: "Interactive", style: "badge-purple" },
-    ],
-    meta: [
-      { key: "Paper", val: "Burgess, Marsh, Lucian & Nair (2026)" },
-      { key: "Records", val: "563 conditions · 2 modalities · 4 outcomes" },
-      { key: "Licence", val: "CC BY 4.0 · Code: MIT" },
-    ],
-    href: "./stim-dashboard/",
-    status: "live",
-    statusLabel: "Live",
-  },
-  {
-    icon: "📐",
-    title: "MATtBend — Beam Tip Deflection Tracker",
-    description: "A MATLAB tool for tracking beam tip deflection in video files. Uses point tracking to measure absolute deflection and X/Y displacement components over time, with interactive scale calibration, batch processing of multiple video formats, and Excel + plot output. Developed for characterising soft robotic and tissue engineering devices.",
-    badges: [
-      { label: "MATLAB", style: "badge-orange" },
-      { label: "Strain Analysis", style: "badge-blue" },
-      { label: "Video", style: "badge-purple" },
-    ],
-    meta: [
-      { key: "Paper", val: "Burgess et al. (2025) — arXiv:2504.05302" },
-      { key: "Output", val: "Per-video + master Excel · deflection plots" },
-      { key: "Requires", val: "MATLAB R2020a+ · Computer Vision Toolbox" },
-    ],
-    href: "https://github.com/SMARTBiomaterials/MATtBend",
-    status: "live",
-    statusLabel: "GitHub",
-    external: true,
-  },
-  // ── ADD NEW DATASETS BELOW ──
-  // {
-  //   icon: "🧬",
-  //   title: "...",
-  //   description: "...",
-  //   badges: [{ label: "...", style: "badge-purple" }],
-  //   meta: [{ key: "Paper", val: "..." }],
-  //   href: "./new-dataset/",
-  //   status: "live",
-  //   statusLabel: "Live",
-  // },
-];
-
-// ── RENDER ────────────────────────────────────────────────────────────────────
-function renderCards() {
-  const container = document.getElementById('cards-container');
-  container.innerHTML = '';
-
-  DATASETS.forEach(d => {
-    const card = document.createElement('a');
-    card.href = d.href;
-    card.className = 'card';
-    if (d.external) { card.target = '_blank'; card.rel = 'noopener noreferrer'; }
-    const linkLabel = d.external ? 'View on GitHub →' : 'Open dashboard →';
-    card.innerHTML = `
-      <div class="card-header">
-        <div class="card-icon">${d.icon}</div>
-        <div class="card-badges">${d.badges.map(b => `<span class="badge ${b.style}">${b.label}</span>`).join('')}</div>
-      </div>
-      <h3>${d.title}</h3>
-      <p>${d.description}</p>
-      <div class="card-meta">${d.meta.map(m => `<div class="card-meta-row"><strong>${m.key}:</strong> ${m.val}</div>`).join('')}</div>
-      <div class="card-footer">
-        <span class="card-link">${linkLabel}</span>
-        <span class="card-status ${d.status}">${d.statusLabel}</span>
-      </div>
-    `;
-    container.appendChild(card);
-  });
-
-  // Placeholder for future entries
-  const placeholder = document.createElement('div');
-  placeholder.className = 'card-placeholder';
-  placeholder.innerHTML = `<span class="plus">+</span><span>More datasets &amp; tools coming soon</span>`;
-  container.appendChild(placeholder);
-}
-
-// ── THEME ─────────────────────────────────────────────────────────────────────
-function initTheme() {
-  const stored = localStorage.getItem('smart-theme');
-  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-  applyTheme(stored || (prefersDark ? 'dark' : 'light'));
-}
-function applyTheme(theme) {
-  document.documentElement.setAttribute('data-theme', theme);
-  const btn = document.getElementById('theme-btn');
-  if (btn) btn.textContent = theme === 'dark' ? '☀︎ Light' : '☾ Dark';
-  localStorage.setItem('smart-theme', theme);
-}
-function toggleTheme() {
-  const current = document.documentElement.getAttribute('data-theme') || 'dark';
-  applyTheme(current === 'dark' ? 'light' : 'dark');
-}
-
-// ── BOOT ──────────────────────────────────────────────────────────────────────
-initTheme();
-renderCards();
-</script>
+<script src="/assets/js/datahub.js" defer></script>
 </body>
 </html>
