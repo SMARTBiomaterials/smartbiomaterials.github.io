@@ -231,6 +231,11 @@ header {
 }
 
 /* ── META ───────────────────────────────────── */
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 20px; /* increase from current */
+}
 .card-meta {
   display: flex;
   flex-direction: column;
@@ -406,4 +411,56 @@ header {
 .hero {
   padding: 80px 48px 64px;
   max-width: 900px;
+}
+footer {
+  border-top: 1px solid var(--border);
+  padding: 24px 48px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+
+  font-size: 11px;
+  color: var(--text-soft);
+}
+
+footer a {
+  color: var(--green);
+  text-decoration: none;
+}
+
+footer a:hover {
+  text-decoration: underline;
+}
+
+.footer-links {
+  display: flex;
+  gap: 20px;
+}
+.hero-stats {
+  display: flex;
+  gap: 40px;
+  margin-top: 28px;
+}
+
+.hero-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.hero-stat .n {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--green);
+  line-height: 1;
+}
+
+.hero-stat .l {
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-soft);
 }
