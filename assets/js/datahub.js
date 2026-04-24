@@ -102,7 +102,7 @@ function toggleTheme() {
   const current = document.documentElement.getAttribute('data-theme') || 'dark';
   applyTheme(current === 'dark' ? 'light' : 'dark');
 }
-
+document.getElementById('theme-btn')?.addEventListener('click', toggleTheme);
 // ── BOOT ──────────────────────────────────────────────────────────────────────
 initTheme();
 renderCards();
