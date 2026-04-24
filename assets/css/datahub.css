@@ -283,3 +283,60 @@ header {
   font-size: 24px;
   opacity: 0.4;
 }
+/* ── LAYOUT RESTORE (what you lost) ─────────── */
+
+.hero {
+  padding: 80px 48px 48px;
+  max-width: 900px;
+}
+
+.hero h1 {
+  font-size: clamp(28px, 4vw, 48px);
+  line-height: 1.2;
+  margin-bottom: 16px;
+}
+
+.hero p {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--text-dim);
+}
+
+.hero-stats {
+  display: flex;
+  gap: 28px;
+  margin-top: 24px;
+}
+
+.hero-stat .n {
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--green);
+}
+
+.hero-stat .l {
+  font-size: 10px;
+  text-transform: uppercase;
+  color: var(--text-soft);
+}
+
+/* section spacing */
+.section {
+  padding: 0 48px 80px;
+}
+
+.section-header {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 10px;
+}
+
+.section-header h2 {
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--green);
+}
