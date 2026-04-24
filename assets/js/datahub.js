@@ -1,3 +1,13 @@
+function isSafeUrl(value) {
+  if (!value) return false;
+  try {
+    const url = new URL(value, window.location.origin);
+    return ['http:', 'https:'].includes(url.protocol);
+  } catch {
+    return false;
+  }
+}
+
 // ── DATASET REGISTRY ──────────────────────────────────────────────────────────
 // To add a new dataset: add one object to this array and redeploy.
 const DATASETS = [
@@ -55,34 +65,99 @@ const DATASETS = [
 // ── RENDER ────────────────────────────────────────────────────────────────────
 function renderCards() {
   const container = document.getElementById('cards-container');
-  container.innerHTML = '';
+  if (!container) return;
+
+  container.replaceChildren();
 
   DATASETS.forEach(d => {
     const card = document.createElement('a');
-    card.href = d.href;
     card.className = 'card';
-    if (d.external) { card.target = '_blank'; card.rel = 'noopener noreferrer'; }
+
+    if (isSafeUrl(d.href)) card.href = d.href;
+
+    if (d.external) {
+      card.target = '_blank';
+      card.rel = 'noopener noreferrer';
+    }
+
     const linkLabel = d.external ? 'View on GitHub →' : 'Open dashboard →';
-    card.innerHTML = `
-      <div class="card-header">
-        <div class="card-icon">${d.icon}</div>
-        <div class="card-badges">${d.badges.map(b => `<span class="badge ${b.style}">${b.label}</span>`).join('')}</div>
-      </div>
-      <h3>${d.title}</h3>
-      <p>${d.description}</p>
-      <div class="card-meta">${d.meta.map(m => `<div class="card-meta-row"><strong>${m.key}:</strong> ${m.val}</div>`).join('')}</div>
-      <div class="card-footer">
-        <span class="card-link">${linkLabel}</span>
-        <span class="card-status ${d.status}">${d.statusLabel}</span>
-      </div>
-    `;
+
+    // header
+    const header = document.createElement('div');
+    header.className = 'card-header';
+
+    const icon = document.createElement('div');
+    icon.className = 'card-icon';
+    icon.textContent = d.icon || '';
+
+    const badgesWrap = document.createElement('div');
+    badgesWrap.className = 'card-badges';
+
+    (d.badges || []).forEach(b => {
+      const span = document.createElement('span');
+      span.className = `badge ${b.style || ''}`;
+      span.textContent = b.label || '';
+      badgesWrap.appendChild(span);
+    });
+
+    header.append(icon, badgesWrap);
+
+    // title
+    const title = document.createElement('h3');
+    title.textContent = d.title || '';
+
+    // description
+    const desc = document.createElement('p');
+    desc.textContent = d.description || '';
+
+    // meta
+    const metaWrap = document.createElement('div');
+    metaWrap.className = 'card-meta';
+
+    (d.meta || []).forEach(m => {
+      const row = document.createElement('div');
+      row.className = 'card-meta-row';
+
+      const strong = document.createElement('strong');
+      strong.textContent = `${m.key}:`;
+
+      const span = document.createElement('span');
+      span.textContent = ` ${m.val}`;
+
+      row.append(strong, span);
+      metaWrap.appendChild(row);
+    });
+
+    // footer
+    const footer = document.createElement('div');
+    footer.className = 'card-footer';
+
+    const link = document.createElement('span');
+    link.className = 'card-link';
+    link.textContent = linkLabel;
+
+    const status = document.createElement('span');
+    status.className = `card-status ${d.status || ''}`;
+    status.textContent = d.statusLabel || '';
+
+    footer.append(link, status);
+
+    card.append(header, title, desc, metaWrap, footer);
     container.appendChild(card);
   });
 
-  // Placeholder for future entries
+  // placeholder
   const placeholder = document.createElement('div');
   placeholder.className = 'card-placeholder';
-  placeholder.innerHTML = `<span class="plus">+</span><span>More datasets &amp; tools coming soon</span>`;
+
+  const plus = document.createElement('span');
+  plus.className = 'plus';
+  plus.textContent = '+';
+
+  const text = document.createElement('span');
+  text.textContent = 'More datasets & tools coming soon';
+
+  placeholder.append(plus, text);
   container.appendChild(placeholder);
 }
 
@@ -102,7 +177,10 @@ function toggleTheme() {
   const current = document.documentElement.getAttribute('data-theme') || 'dark';
   applyTheme(current === 'dark' ? 'light' : 'dark');
 }
-document.getElementById('theme-btn')?.addEventListener('click', toggleTheme);
-// ── BOOT ──────────────────────────────────────────────────────────────────────
-initTheme();
-renderCards();
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('theme-btn')
+    ?.addEventListener('click', toggleTheme);
+
+  initTheme();
+  renderCards();
+});
